@@ -128,7 +128,7 @@ class CustomLocalizationGenerator
       print("final source");
       print(dynamicKeysSource);
       subClassSource += dynamicKeysSource;
-      subClassSource += "}";
+      // subClassSource += "}";
       subClasses.add(subClassSource);
 
       //add child class as fields in Locale class if its the default locale otherwise add as getter with value of child class
