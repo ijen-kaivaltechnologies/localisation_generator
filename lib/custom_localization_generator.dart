@@ -124,11 +124,11 @@ class CustomLocalizationGenerator
               "@override get ${toCamelCase(key)} => ${(value as String).contains("\$") ? "r\"$value\"" : "\"$value\""};";
         });
       }
-      dynamicKeysSource += "};";
+      dynamicKeysSource += "}";
       print("final source");
       print(dynamicKeysSource);
       subClassSource += dynamicKeysSource;
-      // subClassSource += "}";
+      subClassSource += "}";
       subClasses.add(subClassSource);
 
       //add child class as fields in Locale class if its the default locale otherwise add as getter with value of child class
