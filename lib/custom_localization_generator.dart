@@ -11,8 +11,8 @@ import 'package:source_gen/source_gen.dart';
 
 class CustomLocalizationGenerator
     extends GeneratorForAnnotation<CustomLocalization> {
-  // static String _getValueByKeyMethod =
-  //     "String? byKey(String key)=> _dynamicValues[key];";
+  static String _getValueByKeyMethod =
+      "String? byKey(String key)=> _dynamicValues[key];";
 
   @override
   generateForAnnotatedElement(
@@ -95,8 +95,8 @@ class CustomLocalizationGenerator
 
       subClassSource += "{";
 
-      // String dynamicKeysSource =
-      //     _getValueByKeyMethod + " Map<String,String> _dynamicValues={";
+      String dynamicKeysSource =
+          _getValueByKeyMethod + " Map<String,String> _dynamicValues={";
       //add fields with value if class is default locale otherwise add getters of default class fields
       //add key-value to map if key is in dynamicKeys list
       if (defaultLocal == null) {
@@ -106,29 +106,29 @@ class CustomLocalizationGenerator
               localeData.dynamicKeys.addAll(value.map((e) => e.toString()));
             }
           } else {
-            // if (localeData.dynamicKeys.contains(key)) {
-            //   dynamicKeysSource +=
-            //       "\"${toCamelCase(key)}\":  ${(value as String).contains("\$") ? "r\"$value\"" : "\"$value\""},";
-            // }
+            if (localeData.dynamicKeys.contains(key)) {
+              dynamicKeysSource +=
+                  "\"${toCamelCase(key)}\":  ${(value as String).contains("\$") ? "r\"$value\"" : "\"$value\""},";
+            }
             subClassSource +=
                 " String ${toCamelCase(key)} = ${(value as String).contains("\$") ? "r\"$value\"" : "\"$value\""};";
           }
         });
       } else {
         innerValue.forEach((key, value) {
-          // if (defaultLocal.dynamicKeys.contains(key)) {
-          //   dynamicKeysSource +=
-          //       "\"${toCamelCase(key)}\": ${(value as String).contains("\$") ? "r\"$value\"" : "\"$value\""},";
-          // }
+          if (defaultLocal.dynamicKeys.contains(key)) {
+            dynamicKeysSource +=
+                "\"${toCamelCase(key)}\": ${(value as String).contains("\$") ? "r\"$value\"" : "\"$value\""},";
+          }
           subClassSource +=
               "@override get ${toCamelCase(key)} => ${(value as String).contains("\$") ? "r\"$value\"" : "\"$value\""};";
         });
       }
-      // dynamicKeysSource += "};";
-      // print("final source");
-      // print(dynamicKeysSource);
-      // subClassSource += dynamicKeysSource;
-      // subClassSource += "}";
+      dynamicKeysSource += "};";
+      print("final source");
+      print(dynamicKeysSource);
+      subClassSource += dynamicKeysSource;
+      subClassSource += "}";
       subClasses.add(subClassSource);
 
       //add child class as fields in Locale class if its the default locale otherwise add as getter with value of child class
