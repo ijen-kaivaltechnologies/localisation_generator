@@ -130,6 +130,7 @@ class CustomLocalizationGenerator
       subClassSource += dynamicKeysSource;
       subClassSource += "}";
       subClasses.add(subClassSource);
+      subClassSource += "}";
 
       //add child class as fields in Locale class if its the default locale otherwise add as getter with value of child class
       if (defaultLocal == null) {
